@@ -1,5 +1,6 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE RecordWildCards #-}
 
 module Env where
 
@@ -37,11 +38,11 @@ instance (MonadIO m) => MonadLogger (AppT m) where
 -- | Incrementer instance for AppT.
 instance (MonadIO m) => Incrementer (AppT m) where
     incrementCounter key value = do
-        counterService <- asks envCounterService
-        liftIO $ counterServiceIncrement counterService key value
+        CounterService{..} <- asks envCounterService
+        liftIO $ counterServiceIncrement key value
 
 -- | Querier instance for AppT.
 instance (MonadIO m) => Querier (AppT m) where
     queryCounter key = do
-        counterService <- asks envCounterService
-        liftIO $ counterServiceQuery counterService key
+        CounterService{..} <- asks envCounterService
+        liftIO $ counterServiceQuery key
