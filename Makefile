@@ -12,8 +12,8 @@ format:
 		src/Handler.hs \
 		src/Logger.hs \
 		src/Service.hs \
-		src/State.hs \
-		test/Spec.hs
+		test/Spec.hs \
+		test/State.hs
 
 build:
 	@stack build

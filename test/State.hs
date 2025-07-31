@@ -11,14 +11,14 @@ import Control.Concurrent.STM
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HM
 
--- | Counter storage
+-- | In-memory STM storage type for testing.
 type State = TVar (HashMap Key Count)
 
 -- | Create an empty state.
 newState :: IO State
 newState = newTVarIO HM.empty
 
--- | Create a new counter service backed by State.
+-- | Create a new counter test service.
 newCounterService :: State -> CounterService IO
 newCounterService state =
     CounterService

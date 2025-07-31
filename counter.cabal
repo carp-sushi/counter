@@ -33,7 +33,6 @@ library
       Lib
       Logger
       Service
-      State
   other-modules:
       Paths_counter
   autogen-modules:
@@ -93,6 +92,7 @@ test-suite counter-tests
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      State
       Paths_counter
   autogen-modules:
       Paths_counter
