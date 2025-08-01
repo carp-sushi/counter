@@ -4,16 +4,9 @@ all: format build test
 
 format:
 	@fourmolu -q -i \
-		app/Main.hs \
-		src/App.hs \
-		src/Database.hs \
-		src/Domain.hs \
-		src/Env.hs \
-		src/Handler.hs \
-		src/Logger.hs \
-		src/Service.hs \
-		test/Spec.hs \
-		test/State.hs
+		app/*.hs \
+		src/*.hs \
+		test/*.hs
 
 build:
 	@stack build

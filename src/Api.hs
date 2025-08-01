@@ -14,10 +14,11 @@ import Servant.API
 type Root uri = "counters" :> "api" :> "v1" :> uri
 
 -- | The top-level API type.
-type Api = "status" :> Get '[PlainText] Text
-    :<|> Root (Capture "key" Key :> PostNoContent)
-    :<|> Root (Capture "key" Key :> DeleteNoContent)
-    :<|> Root (Capture "key" Key :> Get '[JSON] Counter)
+type Api =
+    "status" :> Get '[PlainText] Text
+        :<|> Root (Capture "key" Key :> PostNoContent)
+        :<|> Root (Capture "key" Key :> DeleteNoContent)
+        :<|> Root (Capture "key" Key :> Get '[JSON] Counter)
 
 -- | API boilerplate.
 api :: Proxy Api
