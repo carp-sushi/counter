@@ -8,7 +8,7 @@ type Key = Text
 type Count = Int
 
 -- | Counter domain object.
-data Counter = Counter Key Count
+data Counter = Counter !Key !Count
     deriving (Eq, Ord, Show)
 
 -- Render counter as JSON.

@@ -10,8 +10,8 @@ import Servant
 -- | Create the application from an environment.
 app :: Env -> Application
 app env =
-    serve api $
-        hoistServer api (transform env) handlers
+    let server = hoistServer api (transform env) handlers
+     in serve api server
 
 -- | Transform handlers for servant.
 transform :: Env -> AppT m a -> m a

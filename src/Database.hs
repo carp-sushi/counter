@@ -6,6 +6,7 @@ module Database (
 import Domain
 import Service
 
+import Control.Monad (void)
 import Data.String.Conversions (cs)
 import qualified Data.Text.Encoding as TE
 import Database.Redis
@@ -26,9 +27,9 @@ newCounterService conn =
 -- | Increment a counter in Redis.
 redisCounterIncrement :: Connection -> Key -> Count -> IO ()
 redisCounterIncrement conn key value =
-    runRedis conn $ do
-        _ <- incrby (TE.encodeUtf8 key) (fromIntegral value)
-        return ()
+    let k = TE.encodeUtf8 key
+        v = fromIntegral value
+     in runRedis conn $ void $ incrby k v
 
 -- | Query the value of a counter in Redis.
 redisCounterQuery :: Connection -> Key -> IO Count
@@ -36,5 +37,5 @@ redisCounterQuery conn key =
     runRedis conn $ do
         value <- get (TE.encodeUtf8 key)
         return $ case value of
-            Right (Just v) -> (read (cs v) :: Count)
+            Right (Just v) -> read $ cs v
             _ -> 0
