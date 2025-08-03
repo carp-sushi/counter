@@ -14,8 +14,10 @@ type LogFunc =
 
 -- | Create a log function that writes to stdout.
 stdoutLogging :: LogFunc
-stdoutLogging = defaultOutput stdout
+stdoutLogging =
+    defaultOutput stdout
 
 -- | Create a log function that does nothing.
 noLogging :: LogFunc
-noLogging _ _ _ _ = return ()
+noLogging _ _ _ _ =
+    return ()

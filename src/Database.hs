@@ -7,9 +7,11 @@ import Domain
 import Service
 
 import Control.Monad (void)
+import Data.ByteString (ByteString)
 import Data.String.Conversions (cs)
 import qualified Data.Text.Encoding as TE
 import Database.Redis
+import Text.Read (readMaybe)
 
 -- | Create a new Redis connection using default settings.
 defaultConnection :: IO Connection
@@ -35,7 +37,19 @@ redisCounterIncrement conn key value =
 redisCounterQuery :: Connection -> Key -> IO Count
 redisCounterQuery conn key =
     runRedis conn $ do
-        value <- get (TE.encodeUtf8 key)
-        return $ case value of
-            Right (Just v) -> read $ cs v
-            _ -> 0
+        value <- get $ TE.encodeUtf8 key
+        return $ readCount value
+
+-- Read count from a redis result.
+readCount :: Either Reply (Maybe ByteString) -> Count
+readCount value =
+    case value of
+        Right (Just v) -> readSafe $ cs v
+        _ -> 0
+
+-- Read count from a string.
+readSafe :: String -> Count
+readSafe s =
+    case readMaybe s of
+        Just n -> n
+        Nothing -> 0

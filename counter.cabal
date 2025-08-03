@@ -45,6 +45,7 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , bytestring
     , hedis
     , monad-logger
     , mtl
@@ -73,6 +74,7 @@ executable counter-server
   build-depends:
       aeson
     , base >=4.7 && <5
+    , bytestring
     , counter
     , hedis
     , monad-logger
@@ -104,6 +106,7 @@ test-suite counter-tests
   build-depends:
       aeson
     , base >=4.7 && <5
+    , bytestring
     , counter
     , hedis
     , hspec
