@@ -1,9 +1,9 @@
-module Lib (devMain) where
+module Counter (devMain) where
 
-import App (app)
-import qualified Database as DB
-import Env (Env (..))
-import Logger (stdoutLogging)
+import Counter.App (app)
+import qualified Counter.Database as DB
+import Counter.Env (Env (..))
+import Counter.Logger (stdoutLogging)
 
 import Network.Wai.Handler.Warp (run)
 import Say (say)

@@ -4,8 +4,8 @@ module State (
     newCounterService,
 ) where
 
-import Domain
-import Service
+import Counter.Domain
+import Counter.Service
 
 import Control.Concurrent.MVar
 import Data.HashMap.Strict (HashMap)

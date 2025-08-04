@@ -1,10 +1,10 @@
-module Database (
+module Counter.Database (
     defaultConnection,
     newCounterService,
 ) where
 
-import Domain
-import Service
+import Counter.Domain
+import Counter.Service
 
 import Control.Monad (void)
 import Data.ByteString (ByteString)

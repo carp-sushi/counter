@@ -1,7 +1,7 @@
 module Main (main) where
 
-import qualified Lib
+import qualified Counter
 
 -- TODO: Add/use a production main function.
 main :: IO ()
-main = Lib.devMain
+main = Counter.devMain

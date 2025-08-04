@@ -1,6 +1,6 @@
-module Service where
+module Counter.Service where
 
-import Domain
+import Counter.Domain
 
 -- | Counter service is a record that contains functions to manage counters.
 data CounterService m = CounterService

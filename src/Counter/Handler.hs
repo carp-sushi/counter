@@ -1,12 +1,12 @@
-module Handler (
+module Counter.Handler (
     getStatusH,
     postCountersH,
     deleteCountersH,
     getCountersH,
 ) where
 
-import Domain
-import Env
+import Counter.Domain
+import Counter.Env
 
 import Control.Monad.Logger (logDebugN)
 import Control.Monad.Reader (MonadIO)
@@ -21,19 +21,19 @@ getStatusH = return "up"
 postCountersH :: (MonadIO m) => Key -> AppT m NoContent
 postCountersH key = do
     logDebugN $ "increment counter: " <> key
-    incrementCounter key 1
+    incrementCount key 1
     return NoContent
 
 -- | Handler for decrementing a counter.
 deleteCountersH :: (MonadIO m) => Key -> AppT m NoContent
 deleteCountersH key = do
     logDebugN $ "decrement counter: " <> key
-    incrementCounter key (-1)
+    incrementCount key (-1)
     return NoContent
 
 -- | Handler for getting the count for a key.
 getCountersH :: (MonadIO m) => Key -> AppT m Counter
 getCountersH key = do
     logDebugN $ "query counter: " <> key
-    count <- queryCounter key
+    count <- queryCount key
     return $ Counter key count

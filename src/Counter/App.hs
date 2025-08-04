@@ -1,8 +1,8 @@
-module App (app) where
+module Counter.App (app) where
 
-import Api
-import Env
-import Handler
+import Counter.Api
+import Counter.Env
+import Counter.Handler
 
 import Control.Monad.Reader (MonadIO, runReaderT)
 import Servant

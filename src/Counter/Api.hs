@@ -2,9 +2,9 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Api (Api, api) where
+module Counter.Api (Api, api) where
 
-import Domain
+import Counter.Domain
 
 import Data.Proxy
 import Data.Text (Text)

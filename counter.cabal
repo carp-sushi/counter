@@ -24,15 +24,15 @@ source-repository head
 
 library
   exposed-modules:
-      Api
-      App
-      Database
-      Domain
-      Env
-      Handler
-      Lib
-      Logger
-      Service
+      Counter
+      Counter.Api
+      Counter.App
+      Counter.Database
+      Counter.Domain
+      Counter.Env
+      Counter.Handler
+      Counter.Logger
+      Counter.Service
   other-modules:
       Paths_counter
   autogen-modules:

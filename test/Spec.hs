@@ -1,7 +1,7 @@
-import App (app)
-import Env (Env (..))
-import Logger (noLogging)
-import Service (CounterService (..))
+import Counter.App (app)
+import Counter.Env (Env (..))
+import Counter.Logger (noLogging)
+import Counter.Service (CounterService (..))
 import qualified State as S
 
 import Control.Monad.IO.Class (MonadIO, liftIO)

@@ -2,11 +2,11 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE RecordWildCards #-}
 
-module Env where
+module Counter.Env where
 
-import Domain
-import Logger
-import Service
+import Counter.Domain
+import Counter.Logger
+import Counter.Service
 
 import Control.Monad.Except (MonadError)
 import Control.Monad.Logger (MonadLogger (..), toLogStr)
@@ -37,12 +37,12 @@ instance (MonadIO m) => MonadLogger (AppT m) where
 
 -- | Incrementer instance for AppT.
 instance (MonadIO m) => Incrementer (AppT m) where
-    incrementCounter key value = do
+    incrementCount key value = do
         CounterService{..} <- asks envCounterService
         liftIO $ counterServiceIncrement key value
 
 -- | Querier instance for AppT.
 instance (MonadIO m) => Querier (AppT m) where
-    queryCounter key = do
+    queryCount key = do
         CounterService{..} <- asks envCounterService
         liftIO $ counterServiceQuery key

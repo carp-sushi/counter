@@ -1,4 +1,4 @@
-module Logger where
+module Counter.Logger where
 
 import Control.Monad.Logger (Loc, LogLevel, LogSource, LogStr)
 import Control.Monad.Logger.CallStack (defaultOutput)

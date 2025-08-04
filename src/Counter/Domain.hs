@@ -1,4 +1,4 @@
-module Domain where
+module Counter.Domain where
 
 import Data.Aeson hiding (Key)
 import Data.Text (Text)
@@ -18,8 +18,8 @@ instance ToJSON Counter where
 
 -- | Increment a counter.
 class (Monad m) => Incrementer m where
-    incrementCounter :: Key -> Count -> m ()
+    incrementCount :: Key -> Count -> m ()
 
 -- | Query a counter.
 class (Monad m) => Querier m where
-    queryCounter :: Key -> m Count
+    queryCount :: Key -> m Count
