@@ -19,7 +19,7 @@ defaultConnection =
     checkedConnect defaultConnectInfo
 
 -- | Create a new counter service backed by Redis.
-newCounterService :: Connection -> CounterService IO
+newCounterService :: Connection -> CounterService
 newCounterService conn =
     CounterService
         { counterServiceIncrement = redisCounterIncrement conn

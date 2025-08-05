@@ -2,8 +2,8 @@ module Counter.Service where
 
 import Counter.Domain
 
--- | Counter service is a record that contains functions to manage counters.
-data CounterService m = CounterService
-    { counterServiceIncrement :: Key -> Count -> m ()
-    , counterServiceQuery :: Key -> m Count
+-- | Counter service is a record that contains concrete functions to manage counters.
+data CounterService = CounterService
+    { counterServiceIncrement :: Key -> Count -> IO ()
+    , counterServiceQuery :: Key -> IO Count
     }

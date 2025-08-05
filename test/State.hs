@@ -20,7 +20,7 @@ newState =
     newMVar HM.empty
 
 -- | Create a new counter test service.
-newCounterService :: State -> CounterService IO
+newCounterService :: State -> CounterService
 newCounterService state =
     CounterService
         { counterServiceIncrement = stateCounterIncrement state

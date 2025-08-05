@@ -14,7 +14,7 @@ import Control.Monad.Reader (MonadIO, MonadReader, ReaderT, asks, liftIO)
 
 -- | App environment
 data Env = Env
-    { envCounterService :: !(CounterService IO)
+    { envCounterService :: !CounterService
     , envLogFunc :: !LogFunc
     }
 
