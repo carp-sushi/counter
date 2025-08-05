@@ -44,12 +44,5 @@ redisCounterQuery conn key =
 readCount :: Either Reply (Maybe ByteString) -> Count
 readCount value =
     case value of
-        Right (Just v) -> readSafe $ cs v
+        Right (Just v) -> maybe 0 id $ readMaybe $ cs v
         _ -> 0
-
--- Read count from a string.
-readSafe :: String -> Count
-readSafe s =
-    case readMaybe s of
-        Just n -> n
-        Nothing -> 0
