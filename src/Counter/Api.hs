@@ -20,6 +20,7 @@ type Api =
         :<|> Root (Capture "key" Key :> DeleteNoContent)
         :<|> Root (Capture "key" Key :> Get '[JSON] Counter)
 
--- | API boilerplate.
+{- API boilerplate. This allows us to pass around type information
+   without needing a concrete value available of the API type. -}
 api :: Proxy Api
 api = Proxy

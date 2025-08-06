@@ -26,14 +26,14 @@ newCounterService conn =
         , counterServiceQuery = redisCounterQuery conn
         }
 
--- | Increment a counter in Redis.
+-- Increment a counter in Redis.
 redisCounterIncrement :: Connection -> Key -> Count -> IO ()
 redisCounterIncrement conn key value =
     let k = TE.encodeUtf8 key
         v = fromIntegral value
      in runRedis conn $ void $ incrby k v
 
--- | Query the value of a counter in Redis.
+-- Query the value of a counter in Redis.
 redisCounterQuery :: Connection -> Key -> IO Count
 redisCounterQuery conn key =
     runRedis conn $ do
