@@ -5,8 +5,7 @@ import Counter.Service (CounterService (..))
 import qualified State as S
 
 import Control.Monad.IO.Class (MonadIO, liftIO)
-import Network.HTTP.Types
-import Servant hiding (Header)
+import Servant (Application)
 
 import Test.Hspec
 import Test.Hspec.Wai
@@ -21,27 +20,25 @@ setupApp =
         let counterService = S.newCounterService state
         return $ app $ Env counterService noLogging
 
--- POST helper (no headers or body).
-postUrl url =
-    request methodPost url [] ""
-
 -- Test for getting the server status.
 spec_status :: Spec
 spec_status =
     with setupApp $ do
         describe "GET /status" $ do
             it "should get the server status" $ do
-                get "/status" `shouldRespondWith` 200
+                get "/status" `shouldRespondWith` "up"
 
 -- Test for incrementing counters.
 spec_increment :: Spec
 spec_increment =
     with setupApp $ do
         describe "POST /counters" $ do
-            it "should create a counter for a key" $ do
-                postUrl "/counters/api/v1/test" `shouldRespondWith` 204
+            it "should increment a counter for a key" $ do
+                let uri = "/counters/api/v1/test"
+                post uri "" `shouldRespondWith` "{\"count\":1,\"key\":\"test\"}"
+                post uri "" `shouldRespondWith` "{\"count\":2,\"key\":\"test\"}"
             it "should fail with missing key" $ do
-                postUrl "/counters/api/v1" `shouldRespondWith` 404
+                post "/counters/api/v1" "" `shouldRespondWith` 404
 
 -- Test for decrementing counters.
 spec_decrement :: Spec
@@ -49,7 +46,9 @@ spec_decrement =
     with setupApp $ do
         describe "DELETE /counters" $ do
             it "should decrement a counter for a key" $ do
-                delete "/counters/api/v1/test" `shouldRespondWith` 204
+                let uri = "/counters/api/v1/test"
+                delete uri `shouldRespondWith` "{\"count\":-1,\"key\":\"test\"}"
+                delete uri `shouldRespondWith` "{\"count\":-2,\"key\":\"test\"}"
             it "should fail with missing key" $ do
                 delete "/counters/api/v1" `shouldRespondWith` 404
 

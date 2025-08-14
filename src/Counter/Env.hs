@@ -10,7 +10,7 @@ import Counter.Service
 
 import Control.Monad.Except (MonadError)
 import Control.Monad.Logger (MonadLogger (..), toLogStr)
-import Control.Monad.Reader (MonadIO, MonadReader, ReaderT, asks, liftIO)
+import Control.Monad.Reader (MonadIO, MonadReader, ReaderT, asks, liftIO, runReaderT)
 
 -- | App environment
 data Env = Env
@@ -28,6 +28,11 @@ newtype AppT m a = AppT {unAppT :: ReaderT Env m a}
         , MonadIO
         , MonadError err
         )
+
+-- | Run an AppT monad with a given environment.
+runAppT :: Env -> AppT m a -> m a
+runAppT env appt =
+    runReaderT (unAppT appt) env
 
 -- | MonadLogger instance for AppT.
 instance (MonadIO m) => MonadLogger (AppT m) where

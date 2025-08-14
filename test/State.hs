@@ -28,13 +28,13 @@ newCounterService state =
         }
 
 -- | Increment a counter under a key.
-stateCounterIncrement :: State -> Key -> Count -> IO ()
-stateCounterIncrement state key value =
-    modifyMVar_ state $
-        return . HM.insertWith (+) key value
+stateCounterIncrement :: State -> Key -> Count -> IO Counter
+stateCounterIncrement state key value = do
+    modifyMVar_ state $ return . HM.insertWith (+) key value
+    stateCounterQuery state key
 
 -- | Query a counter by key.
-stateCounterQuery :: State -> Key -> IO Count
+stateCounterQuery :: State -> Key -> IO Counter
 stateCounterQuery state key = do
     counters <- readMVar state
-    return $ HM.findWithDefault 0 key counters
+    return $ Counter key $ HM.findWithDefault 0 key counters

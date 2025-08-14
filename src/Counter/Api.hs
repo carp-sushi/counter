@@ -16,8 +16,8 @@ type Root uri = "counters" :> "api" :> "v1" :> uri
 -- | The top-level API type.
 type Api =
     "status" :> Get '[PlainText] Text
-        :<|> Root (Capture "key" Key :> PostNoContent)
-        :<|> Root (Capture "key" Key :> DeleteNoContent)
+        :<|> Root (Capture "key" Key :> Post '[JSON] Counter)
+        :<|> Root (Capture "key" Key :> Delete '[JSON] Counter)
         :<|> Root (Capture "key" Key :> Get '[JSON] Counter)
 
 {- API boilerplate. This allows us to pass around type information

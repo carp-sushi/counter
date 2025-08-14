@@ -5,7 +5,7 @@ import Data.Text (Text)
 
 -- Counter primitives.
 type Key = Text
-type Count = Int
+type Count = Integer
 
 -- | Counter domain object.
 data Counter = Counter !Key !Count
@@ -18,8 +18,8 @@ instance ToJSON Counter where
 
 -- | Increment a counter.
 class (Monad m) => Incrementer m where
-    incrementCount :: Key -> Count -> m ()
+    incrementCount :: Key -> Count -> m Counter
 
 -- | Query a counter.
 class (Monad m) => Querier m where
-    queryCount :: Key -> m Count
+    queryCount :: Key -> m Counter

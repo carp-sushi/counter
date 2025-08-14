@@ -6,6 +6,7 @@ format:
 	@fourmolu -q -i \
 		app/*.hs \
 		src/*.hs \
+		src/**/*.hs \
 		test/*.hs
 
 build:
@@ -15,7 +16,7 @@ test:
 	@stack test
 
 lint:
-	@hlint src/*.hs app/*.hs
+	@hlint src/*.hs src/**/*.hs app/*.hs
 
 run:
 	@stack run

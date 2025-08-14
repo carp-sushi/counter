@@ -4,4 +4,4 @@ import qualified Counter
 
 -- TODO: Add/use a production main function.
 main :: IO ()
-main = Counter.devMain
+main = Counter.devServer
