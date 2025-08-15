@@ -8,9 +8,9 @@ import Counter.Domain
 import Counter.Logger
 import Counter.Service
 
-import Control.Monad.Except (MonadError)
 import Control.Monad.Logger (MonadLogger (..), toLogStr)
 import Control.Monad.Reader (MonadIO, MonadReader, ReaderT, asks, liftIO, runReaderT)
+import Data.Time
 
 -- | App environment
 data Env = Env
@@ -26,7 +26,6 @@ newtype AppT m a = AppT {unAppT :: ReaderT Env m a}
         , Monad
         , MonadReader Env
         , MonadIO
-        , MonadError err
         )
 
 -- | Run an AppT monad with a given environment.
@@ -37,8 +36,11 @@ runAppT env appt =
 -- | MonadLogger instance for AppT.
 instance (MonadIO m) => MonadLogger (AppT m) where
     monadLoggerLog loc src lvl msg = do
+        ts <- liftIO getCurrentTime
+        let tsFmt = formatTime defaultTimeLocale "%Y-%m-%dT%H:%M:%S" ts
+            timestamp = toLogStr $ "[" <> tsFmt <> "] "
         logFunc <- asks envLogFunc
-        liftIO $ logFunc loc src lvl (toLogStr msg)
+        liftIO $ logFunc loc src lvl (timestamp <> toLogStr msg)
 
 -- | Incrementer instance for AppT.
 instance (MonadIO m) => Incrementer (AppT m) where

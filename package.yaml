@@ -26,6 +26,7 @@ dependencies:
   - stm
   - string-conversions
   - text
+  - time
   - transformers
   - unordered-containers
   - warp
