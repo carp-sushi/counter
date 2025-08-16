@@ -1,10 +1,10 @@
 module Counter.Database (
     defaultConnection,
-    newCounterService,
+    newCounterRepo,
 ) where
 
 import Counter.Domain
-import Counter.Service
+import Counter.Repo
 
 import Data.ByteString (ByteString)
 import Data.Maybe (fromMaybe)
@@ -19,11 +19,11 @@ defaultConnection =
     checkedConnect defaultConnectInfo
 
 -- | Create a new counter service backed by Redis.
-newCounterService :: Connection -> CounterService
-newCounterService conn =
-    CounterService
-        { counterServiceIncrement = redisCounterIncrement conn
-        , counterServiceQuery = redisCounterQuery conn
+newCounterRepo :: Connection -> CounterRepo
+newCounterRepo conn =
+    CounterRepo
+        { counterRepoIncrement = redisCounterIncrement conn
+        , counterRepoQuery = redisCounterQuery conn
         }
 
 -- Increment a counter in Redis.

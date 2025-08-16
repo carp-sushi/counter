@@ -6,7 +6,7 @@ module Counter.Env where
 
 import Counter.Domain
 import Counter.Logger
-import Counter.Service
+import Counter.Repo
 
 import Control.Monad.Logger (MonadLogger (..), toLogStr)
 import Control.Monad.Reader (MonadIO, MonadReader, ReaderT, asks, liftIO, runReaderT)
@@ -14,7 +14,7 @@ import Data.Time
 
 -- | App environment
 data Env = Env
-    { envCounterService :: !CounterService
+    { envCounterRepo :: !CounterRepo
     , envLogFunc :: !LogFunc
     }
 
@@ -45,11 +45,11 @@ instance (MonadIO m) => MonadLogger (AppT m) where
 -- | Incrementer instance for AppT.
 instance (MonadIO m) => Incrementer (AppT m) where
     incrementCount key value = do
-        CounterService{..} <- asks envCounterService
-        liftIO $ counterServiceIncrement key value
+        CounterRepo{..} <- asks envCounterRepo
+        liftIO $ counterRepoIncrement key value
 
 -- | Querier instance for AppT.
 instance (MonadIO m) => Querier (AppT m) where
     queryCount key = do
-        CounterService{..} <- asks envCounterService
-        liftIO $ counterServiceQuery key
+        CounterRepo{..} <- asks envCounterRepo
+        liftIO $ counterRepoQuery key

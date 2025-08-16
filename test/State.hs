@@ -1,11 +1,11 @@
 module State (
     State,
     newState,
-    newCounterService,
+    fakeCounterRepo,
 ) where
 
 import Counter.Domain
-import Counter.Service
+import Counter.Repo
 
 import Control.Concurrent.MVar
 import Data.HashMap.Strict (HashMap)
@@ -19,12 +19,12 @@ newState :: IO State
 newState =
     newMVar HM.empty
 
--- | Create a new counter test service.
-newCounterService :: State -> CounterService
-newCounterService state =
-    CounterService
-        { counterServiceIncrement = stateCounterIncrement state
-        , counterServiceQuery = stateCounterQuery state
+-- | Create a new fake counter repository backed by in-memory state.
+fakeCounterRepo :: State -> CounterRepo
+fakeCounterRepo state =
+    CounterRepo
+        { counterRepoIncrement = stateCounterIncrement state
+        , counterRepoQuery = stateCounterQuery state
         }
 
 -- | Increment a counter under a key.

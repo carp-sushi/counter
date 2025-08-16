@@ -1,8 +1,8 @@
 import Counter.App (app)
 import Counter.Env (Env (..))
 import Counter.Logger (noLogging)
-import Counter.Service (CounterService (..))
-import qualified State as S
+import Counter.Repo (CounterRepo (..))
+import State (fakeCounterRepo, newState)
 
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Servant (Application)
@@ -16,9 +16,8 @@ import Test.Tasty.Hspec
 setupApp :: (MonadIO m) => m Application
 setupApp =
     liftIO $ do
-        state <- S.newState
-        let counterService = S.newCounterService state
-        return $ app $ Env counterService noLogging
+        state <- newState
+        return $ app $ Env (fakeCounterRepo state) noLogging
 
 -- Test for getting the server status.
 spec_status :: Spec
