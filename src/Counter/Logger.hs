@@ -5,7 +5,7 @@ import Control.Monad.Logger.CallStack (defaultOutput)
 import System.IO (stdout)
 
 -- | Log function type.
-type LogFunc =
+type LogFn =
     Loc ->
     LogSource ->
     LogLevel ->
@@ -13,11 +13,11 @@ type LogFunc =
     IO ()
 
 -- | Create a log function that writes to stdout.
-stdoutLogging :: LogFunc
+stdoutLogging :: LogFn
 stdoutLogging =
     defaultOutput stdout
 
 -- | Create a log function that does nothing.
-noLogging :: LogFunc
+noLogging :: LogFn
 noLogging _ _ _ _ =
-    return ()
+    pure ()

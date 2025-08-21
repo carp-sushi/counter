@@ -23,7 +23,6 @@ dependencies:
   - say
   - servant
   - servant-server
-  - stm
   - string-conversions
   - text
   - time

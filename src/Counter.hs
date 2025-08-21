@@ -26,7 +26,7 @@ devServer = do
 devEnv :: IO Env
 devEnv = do
     conn <- DB.defaultConnection
-    return $ Env (DB.newCounterRepo conn) stdoutLogging
+    pure $ Env (DB.newCounterRepo conn) stdoutLogging
 
 -- | Get the counter for a given key.
 getCounter :: Env -> Key -> IO Counter

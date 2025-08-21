@@ -15,7 +15,7 @@ import Data.Time
 -- | App environment
 data Env = Env
     { envCounterRepo :: !CounterRepo
-    , envLogFunc :: !LogFunc
+    , envLogFn :: !LogFn
     }
 
 -- | Custom reader monad stack for request handlers.
@@ -39,8 +39,8 @@ instance (MonadIO m) => MonadLogger (AppT m) where
         ts <- liftIO getCurrentTime
         let tsFmt = formatTime defaultTimeLocale "%Y-%m-%dT%H:%M:%S" ts
             timestamp = toLogStr $ "[" <> tsFmt <> "] "
-        logFunc <- asks envLogFunc
-        liftIO $ logFunc loc src lvl (timestamp <> toLogStr msg)
+        logFn <- asks envLogFn
+        liftIO $ logFn loc src lvl (timestamp <> toLogStr msg)
 
 -- | Incrementer instance for AppT.
 instance (MonadIO m) => Incrementer (AppT m) where

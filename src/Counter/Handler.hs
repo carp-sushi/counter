@@ -14,7 +14,8 @@ import Data.Text (Text)
 
 -- | Handler for getting the server status.
 getStatusH :: (MonadIO m) => AppT m Text
-getStatusH = return "up"
+getStatusH =
+    pure "up"
 
 -- | Handler for incrementing a counter.
 postCountersH :: (MonadLogger m, Incrementer m) => Key -> m Counter

@@ -29,11 +29,8 @@ newCounterRepo conn =
 -- Increment a counter in Redis.
 redisCounterIncrement :: Connection -> Key -> Count -> IO Counter
 redisCounterIncrement conn key value = do
-    result <- runRedis conn $ incrby k v
-    return $ Counter key $ readIntegerCount result
-  where
-    k = TE.encodeUtf8 key
-    v = fromIntegral value
+    result <- runRedis conn $ incrby (TE.encodeUtf8 key) value
+    pure $ Counter key $ readIntegerCount result
 
 -- Read count from a redis integer result.
 readIntegerCount :: Either Reply Integer -> Count
@@ -45,7 +42,7 @@ redisCounterQuery :: Connection -> Key -> IO Counter
 redisCounterQuery conn key =
     runRedis conn $ do
         value <- get $ TE.encodeUtf8 key
-        return $ Counter key $ readByteStringCount value
+        pure $ Counter key $ readByteStringCount value
 
 -- Read count from a redis byte string result.
 readByteStringCount :: Either Reply (Maybe ByteString) -> Count

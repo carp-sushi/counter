@@ -52,7 +52,6 @@ library
     , say
     , servant
     , servant-server
-    , stm
     , string-conversions
     , text
     , time
@@ -83,7 +82,6 @@ executable counter-server
     , say
     , servant
     , servant-server
-    , stm
     , string-conversions
     , text
     , time
@@ -119,7 +117,6 @@ test-suite counter-tests
     , say
     , servant
     , servant-server
-    , stm
     , string-conversions
     , tasty
     , tasty-hspec
