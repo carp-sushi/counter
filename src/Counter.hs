@@ -1,6 +1,7 @@
 module Counter (
     devServer,
-    getCounter,
+    devEnv,
+    queryCounter,
     incrementCounter,
     decrementCounter,
 ) where
@@ -29,16 +30,16 @@ devEnv = do
     pure $ Env (DB.newCounterRepo conn) stdoutLogging
 
 -- | Get the counter for a given key.
-getCounter :: Env -> Key -> IO Counter
-getCounter env key =
+queryCounter :: Key -> Env -> IO Counter
+queryCounter key env =
     runAppT env $ getCountersH key
 
 -- | Increment the counter for a given key.
-incrementCounter :: Env -> Key -> IO Counter
-incrementCounter env key =
+incrementCounter :: Key -> Env -> IO Counter
+incrementCounter key env =
     runAppT env $ postCountersH key
 
 -- | Decrement the counter for a given key.
-decrementCounter :: Env -> Key -> IO Counter
-decrementCounter env key =
+decrementCounter :: Key -> Env -> IO Counter
+decrementCounter key env =
     runAppT env $ deleteCountersH key
