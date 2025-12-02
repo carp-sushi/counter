@@ -10,7 +10,7 @@ import Counter.Repo
 
 import Control.Monad.Logger (MonadLogger (..), toLogStr)
 import Control.Monad.Reader (MonadIO, MonadReader, ReaderT, asks, liftIO, runReaderT)
-import Data.Time
+import Data.Time (defaultTimeLocale, formatTime, getCurrentTime)
 
 -- | App environment
 data Env = Env

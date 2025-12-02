@@ -6,14 +6,13 @@ module Counter.Handler (
 ) where
 
 import Counter.Domain
-import Counter.Env
 
 import Control.Monad.Logger (MonadLogger, logDebugN)
 import Control.Monad.Reader (MonadIO)
 import Data.Text (Text)
 
 -- | Handler for getting the server status.
-getStatusH :: (MonadIO m) => AppT m Text
+getStatusH :: (MonadIO m) => m Text
 getStatusH = pure "up"
 
 -- | Handler for incrementing a counter.
