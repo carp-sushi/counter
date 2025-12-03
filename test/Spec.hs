@@ -5,6 +5,7 @@ import Counter.Repo (CounterRepo (..))
 import State (fakeCounterRepo, newState)
 
 import Control.Monad.IO.Class (MonadIO, liftIO)
+import Control.Monad.Logger (LogLevel (LevelError))
 import Servant (Application)
 
 import Test.Hspec
@@ -17,7 +18,7 @@ setupApp :: (MonadIO m) => m Application
 setupApp =
     liftIO $ do
         state <- newState
-        return $ app $ Env (fakeCounterRepo state) noLogging
+        pure $ app $ Env (fakeCounterRepo state) noLogging LevelError
 
 -- Test for getting the server status.
 spec_status :: Spec

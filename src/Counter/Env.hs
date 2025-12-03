@@ -8,7 +8,8 @@ import Counter.Domain (Incrementer (incrementCount), Querier (queryCount))
 import Counter.Logger (LogFn)
 import Counter.Repo (CounterRepo (..))
 
-import Control.Monad.Logger (MonadLogger (..), toLogStr)
+import Control.Monad (when)
+import Control.Monad.Logger (LogLevel, MonadLogger (..), toLogStr)
 import Control.Monad.Reader (MonadIO, MonadReader, ReaderT, asks, liftIO, runReaderT)
 import Data.Time (defaultTimeLocale, formatTime, getCurrentTime)
 
@@ -16,6 +17,7 @@ import Data.Time (defaultTimeLocale, formatTime, getCurrentTime)
 data Env = Env
     { envCounterRepo :: !CounterRepo
     , envLogFn :: !LogFn
+    , envLogLevel :: !LogLevel
     }
 
 -- | Custom reader monad stack for request handlers.
@@ -34,13 +36,15 @@ runAppT env appt =
     runReaderT (unAppT appt) env
 
 -- | MonadLogger instance for AppT.
-instance (MonadIO m) => MonadLogger (AppT m) where
+instance (MonadIO m, Applicative m) => MonadLogger (AppT m) where
     monadLoggerLog loc src lvl msg = do
-        ts <- liftIO getCurrentTime
-        let tsFmt = formatTime defaultTimeLocale "%Y-%m-%dT%H:%M:%S" ts
-            timestamp = toLogStr $ "[" <> tsFmt <> "] "
-        logFn <- asks envLogFn
-        liftIO $ logFn loc src lvl (timestamp <> toLogStr msg)
+        logLevel <- asks envLogLevel
+        when (lvl >= logLevel) $ do
+            ts <- liftIO getCurrentTime
+            let tsFmt = formatTime defaultTimeLocale "%Y-%m-%dT%H:%M:%S" ts
+                timestamp = toLogStr $ "[" <> tsFmt <> "] "
+            logFn <- asks envLogFn
+            liftIO $ logFn loc src lvl (timestamp <> toLogStr msg)
 
 -- | Incrementer instance for AppT.
 instance (MonadIO m) => Incrementer (AppT m) where

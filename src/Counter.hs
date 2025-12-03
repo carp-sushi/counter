@@ -13,6 +13,7 @@ import Counter.Env (Env (..), runAppT)
 import Counter.Handler (deleteCountersH, getCountersH, postCountersH)
 import Counter.Logger (stdoutLogging)
 
+import Control.Monad.Logger (LogLevel (LevelDebug))
 import Network.Wai.Handler.Warp (run)
 import Say (say)
 
@@ -27,7 +28,7 @@ devServer = do
 devEnv :: IO Env
 devEnv = do
     conn <- DB.defaultConnection
-    pure $ Env (DB.newCounterRepo conn) stdoutLogging
+    pure $ Env (DB.newCounterRepo conn) stdoutLogging LevelDebug
 
 -- | Get the counter for a given key.
 queryCounter :: Key -> Env -> IO Counter

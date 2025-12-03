@@ -4,8 +4,8 @@ module State (
     fakeCounterRepo,
 ) where
 
-import Counter.Domain
-import Counter.Repo
+import Counter.Domain (Count, Counter (..), Key)
+import Counter.Repo (CounterRepo (..))
 
 import Control.Concurrent.MVar
 import Data.HashMap.Strict (HashMap)
@@ -30,11 +30,11 @@ fakeCounterRepo state =
 -- | Increment a counter under a key.
 stateCounterIncrement :: State -> Key -> Count -> IO Counter
 stateCounterIncrement state key value = do
-    modifyMVar_ state $ return . HM.insertWith (+) key value
+    modifyMVar_ state $ pure . HM.insertWith (+) key value
     stateCounterQuery state key
 
 -- | Query a counter by key.
 stateCounterQuery :: State -> Key -> IO Counter
 stateCounterQuery state key = do
     counters <- readMVar state
-    return $ Counter key $ HM.findWithDefault 0 key counters
+    pure $ Counter key $ HM.findWithDefault 0 key counters
