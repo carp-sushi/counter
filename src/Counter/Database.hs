@@ -3,14 +3,14 @@ module Counter.Database (
     newCounterRepo,
 ) where
 
-import Counter.Domain
-import Counter.Repo
+import Counter.Domain (Count, Counter (Counter), Key)
+import Counter.Repo (CounterRepo (..))
 
 import Data.ByteString (ByteString)
 import Data.Maybe (fromMaybe)
 import Data.String.Conversions (cs)
 import qualified Data.Text.Encoding as TE
-import Database.Redis
+import Database.Redis (Connection, checkedConnect, defaultConnectInfo, get, incrby, runRedis)
 import Text.Read (readMaybe)
 
 -- | Create a new Redis connection using default settings.
@@ -33,7 +33,7 @@ redisCounterIncrement conn key value = do
     pure $ Counter key $ readIntegerCount result
 
 -- Read count from a redis integer result.
-readIntegerCount :: Either Reply Integer -> Count
+readIntegerCount :: Either r Integer -> Count
 readIntegerCount (Right count) = count
 readIntegerCount (Left _) = 0
 
@@ -45,7 +45,7 @@ redisCounterQuery conn key =
         pure $ Counter key $ readByteStringCount value
 
 -- Read count from a redis byte string result.
-readByteStringCount :: Either Reply (Maybe ByteString) -> Count
+readByteStringCount :: Either r (Maybe ByteString) -> Count
 readByteStringCount value =
     case value of
         Right (Just v) -> fromMaybe 0 $ readMaybe $ cs v

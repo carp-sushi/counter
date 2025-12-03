@@ -5,7 +5,7 @@ module Counter.Handler (
     getCountersH,
 ) where
 
-import Counter.Domain
+import Counter.Domain (Counter, Incrementer (incrementCount), Key, Querier (queryCount))
 
 import Control.Monad.Logger (MonadLogger, logDebugN)
 import Control.Monad.Reader (MonadIO)

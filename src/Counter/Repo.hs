@@ -1,6 +1,6 @@
 module Counter.Repo where
 
-import Counter.Domain
+import Counter.Domain (Count, Counter, Key)
 
 -- | Counter repo is a mockable record that contains functions to manage counters.
 data CounterRepo = CounterRepo

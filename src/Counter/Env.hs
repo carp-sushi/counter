@@ -4,9 +4,9 @@
 
 module Counter.Env where
 
-import Counter.Domain
-import Counter.Logger
-import Counter.Repo
+import Counter.Domain (Incrementer (incrementCount), Querier (queryCount))
+import Counter.Logger (LogFn)
+import Counter.Repo (CounterRepo (..))
 
 import Control.Monad.Logger (MonadLogger (..), toLogStr)
 import Control.Monad.Reader (MonadIO, MonadReader, ReaderT, asks, liftIO, runReaderT)

@@ -4,7 +4,7 @@
 
 module Counter.Api (Api, api) where
 
-import Counter.Domain
+import Counter.Domain (Counter, Key)
 
 import Data.Proxy
 import Data.Text (Text)
