@@ -19,7 +19,7 @@ stack build
 # Run tests
 stack test
 
-# Run the server (port 9000)
+# Run the server
 stack run
 
 # Format code with fourmolu
@@ -59,12 +59,14 @@ The codebase follows a clean architecture pattern with clear separation of conce
 ### Key Patterns
 
 **Repository Pattern**: The `CounterRepo` is a record containing function pointers, allowing easy substitution of implementations:
+
 - Production: Redis-backed implementation in `Counter.Database`
 - Testing: In-memory HashMap implementation in `test/State.hs`
 
 **Type Class Constraints**: Handlers use `Incrementer` and `Querier` type classes rather than concrete types, enabling polymorphic implementations in `AppT`.
 
 **Reader Monad**: The `AppT` transformer wraps `ReaderT Env`, providing access to:
+
 - `envCounterRepo`: Repository implementation
 - `envLogFn`: Logging function
 
@@ -73,6 +75,7 @@ The codebase follows a clean architecture pattern with clear separation of conce
 ### Parameter Order Convention
 
 Top-level functions follow the pattern: data arguments first, environment/config last. This enables partial application:
+
 ```haskell
 queryCounter :: Key -> Env -> IO Counter
 incrementCounter :: Key -> Env -> IO Counter
@@ -90,6 +93,7 @@ incrementCounter :: Key -> Env -> IO Counter
 ### HLint Configuration
 
 The project uses `.hlint.yaml` to prohibit dangerous Haskell functions and patterns:
+
 - Partial functions (`head`, `tail`, `fromJust`, etc.) - use safe alternatives
 - Unsafe IO operations (`unsafePerformIO`, etc.)
 - `forkIO` - use the async library instead
@@ -104,6 +108,7 @@ The project uses `.hlint.yaml` to prohibit dangerous Haskell functions and patte
 ## Testing
 
 Tests use Hspec with `hspec-wai` for HTTP endpoint testing. The test suite:
+
 - Uses `fakeCounterRepo` backed by `MVar (HashMap Key Count)` for in-memory state
 - Sets up fresh application state per test suite with `setupApp`
 - Tests all API endpoints with real HTTP requests via `hspec-wai`

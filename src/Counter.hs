@@ -21,8 +21,8 @@ import Say (say)
 devServer :: IO ()
 devServer = do
     env <- devEnv
-    say "Running counter-server on port 9000"
-    run 9000 (app env)
+    say "Counter DEV server running on port 3000"
+    run 3000 (app env)
 
 -- | Create a development environment.
 devEnv :: IO Env
