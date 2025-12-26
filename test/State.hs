@@ -7,10 +7,10 @@ module State (
 import Counter.Domain (Count, Counter (..), Key)
 import Counter.Repo (CounterRepo (..))
 
-import qualified Control.Monad.STM as STM
+import Control.Monad.STM (atomically)
 import Data.Maybe (fromMaybe)
 import StmContainers.Map (Map)
-import qualified StmContainers.Map as HM
+import qualified StmContainers.Map as Map
 
 -- | In-memory storage type for testing.
 type State = Map Key Count
@@ -18,7 +18,7 @@ type State = Map Key Count
 -- | Create an empty state.
 newState :: IO State
 newState =
-    HM.newIO
+    Map.newIO
 
 -- | Create a new fake counter repository backed by in-memory state.
 stateCounterRepo :: State -> CounterRepo
@@ -31,15 +31,15 @@ stateCounterRepo state =
 -- | Increment a counter under a key.
 stateCounterIncrement :: State -> Key -> Count -> IO Counter
 stateCounterIncrement state key value = do
-    STM.atomically $ do
-        maybeCount <- HM.lookup key state
+    atomically $ do
+        maybeCount <- Map.lookup key state
         let newCount = maybe value (+ value) maybeCount
-        HM.insert newCount key state
+        Map.insert newCount key state
         pure $ Counter key newCount
 
 -- | Query a counter by key.
 stateCounterQuery :: State -> Key -> IO Counter
 stateCounterQuery state key = do
-    STM.atomically $ do
-        maybeCount <- HM.lookup key state
+    atomically $ do
+        maybeCount <- Map.lookup key state
         pure $ Counter key $ fromMaybe 0 maybeCount
