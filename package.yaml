@@ -1,10 +1,10 @@
-name: counter
-version: 0.1.0.0
-github: "carp-sushi/counter"
-license: BSD-3-Clause
-author: "carp-sushi"
-maintainer: "105142707+carp-sushi@users.noreply.github.com"
-copyright: "Copyright 2025-present, the original author(s)"
+name:        counter
+version:     0.1.0.0
+github:      "carp-sushi/counter"
+license:     BSD-3-Clause
+author:      "carp-sushi"
+maintainer:  "105142707+carp-sushi@users.noreply.github.com"
+copyright:   "Copyright 2025-present, the original author(s)"
 description: Please see the README on GitHub at <https://github.com/carp-sushi/counter#readme>
 
 extra-source-files:
@@ -26,8 +26,6 @@ dependencies:
   - string-conversions
   - text
   - time
-  - transformers
-  - unordered-containers
   - warp
 
 library:
