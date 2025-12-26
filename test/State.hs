@@ -1,27 +1,28 @@
 module State (
     State,
     newState,
-    fakeCounterRepo,
+    stateCounterRepo,
 ) where
 
 import Counter.Domain (Count, Counter (..), Key)
 import Counter.Repo (CounterRepo (..))
 
-import Control.Concurrent.MVar
-import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HM
+import qualified Control.Monad.STM as STM
+import Data.Maybe (fromMaybe)
+import StmContainers.Map (Map)
+import qualified StmContainers.Map as HM
 
 -- | In-memory storage type for testing.
-type State = MVar (HashMap Key Count)
+type State = Map Key Count
 
 -- | Create an empty state.
 newState :: IO State
 newState =
-    newMVar HM.empty
+    HM.newIO
 
 -- | Create a new fake counter repository backed by in-memory state.
-fakeCounterRepo :: State -> CounterRepo
-fakeCounterRepo state =
+stateCounterRepo :: State -> CounterRepo
+stateCounterRepo state =
     CounterRepo
         { counterRepoIncrement = stateCounterIncrement state
         , counterRepoQuery = stateCounterQuery state
@@ -30,11 +31,15 @@ fakeCounterRepo state =
 -- | Increment a counter under a key.
 stateCounterIncrement :: State -> Key -> Count -> IO Counter
 stateCounterIncrement state key value = do
-    modifyMVar_ state $ pure . HM.insertWith (+) key value
-    stateCounterQuery state key
+    STM.atomically $ do
+        maybeCount <- HM.lookup key state
+        let newCount = maybe value (+ value) maybeCount
+        HM.insert newCount key state
+        pure $ Counter key newCount
 
 -- | Query a counter by key.
 stateCounterQuery :: State -> Key -> IO Counter
 stateCounterQuery state key = do
-    counters <- readMVar state
-    pure $ Counter key $ HM.findWithDefault 0 key counters
+    STM.atomically $ do
+        maybeCount <- HM.lookup key state
+        pure $ Counter key $ fromMaybe 0 maybeCount

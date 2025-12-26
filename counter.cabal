@@ -117,6 +117,8 @@ test-suite counter-tests
     , say
     , servant
     , servant-server
+    , stm
+    , stm-containers
     , string-conversions
     , tasty
     , tasty-hspec
