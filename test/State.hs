@@ -30,7 +30,7 @@ stateCounterRepo state =
 
 -- | Increment a counter under a key.
 stateCounterIncrement :: State -> Key -> Count -> IO Counter
-stateCounterIncrement state key value = do
+stateCounterIncrement state key value =
     atomically $ do
         maybeCount <- Map.lookup key state
         let newCount = maybe value (+ value) maybeCount
@@ -39,7 +39,7 @@ stateCounterIncrement state key value = do
 
 -- | Query a counter by key.
 stateCounterQuery :: State -> Key -> IO Counter
-stateCounterQuery state key = do
+stateCounterQuery state key =
     atomically $ do
         maybeCount <- Map.lookup key state
         pure $ Counter key $ fromMaybe 0 maybeCount
