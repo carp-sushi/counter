@@ -4,7 +4,6 @@ import Counter.Api (Api, api)
 import Counter.Env (AppT (..), Env, runAppT)
 import Counter.Handler (deleteCountersH, getCountersH, getStatusH, postCountersH)
 
-import Control.Monad.Reader (MonadIO)
 import Servant
 
 -- | Create a Servant application with a given environment.
@@ -14,7 +13,7 @@ app env =
      in serve api server
 
 -- | Combine request handlers for the API.
-handlers :: (MonadIO m) => ServerT Api (AppT m)
+handlers :: ServerT Api (AppT Handler)
 handlers =
     getStatusH
         :<|> postCountersH

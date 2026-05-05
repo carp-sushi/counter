@@ -36,7 +36,7 @@ runAppT env appt =
     runReaderT (unAppT appt) env
 
 -- | MonadLogger instance for AppT.
-instance (MonadIO m, Applicative m) => MonadLogger (AppT m) where
+instance (MonadIO m) => MonadLogger (AppT m) where
     monadLoggerLog loc src lvl msg = do
         logLevel <- asks envLogLevel
         when (lvl >= logLevel) $ do
